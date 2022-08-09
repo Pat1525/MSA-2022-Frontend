@@ -5,11 +5,13 @@ import "./App.css";
 function App() {
   // Declare a new state variable, which we'll call "nbaName"
   const [nbaName, setNbaName] = useState("");
+  const [nbaInfo, setNbaInfo] = useState<undefined | any>(undefined);
 
-  const NBA_BASE_URL = "https://www.balldontlie.io/api/v1/players/";
+  const NBA_BASE_API_URL = "https://www.balldontlie.io/api/v1/players/";
   return (
     <div>
       <h1>Nba Search</h1>
+
       <div>
         <label>Nba Name</label>
         <br />
@@ -25,13 +27,20 @@ function App() {
 
       <p>You have entered {nbaName}</p>
 
-      <div id="nba-result">This will show the result</div>
+      {nbaInfo === undefined ? (
+        <p>Nba not found</p>
+      ) : (
+        <div id="nba-result">
+          <p> {nbaInfo.first_name} </p>
+          <p> {nbaInfo.last_name} </p>
+        </div>
+      )}
     </div>
   );
 
   function search() {
-    axios.get(NBA_BASE_URL + nbaName).then((res) => {
-      console.log(res.data);
+    axios.get(NBA_BASE_API_URL + nbaName).then((res) => {
+      setNbaInfo(res.data);
     });
   }
 }
